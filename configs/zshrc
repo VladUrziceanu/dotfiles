@@ -27,7 +27,9 @@ export PATH=$PATH:~/bin/
 # Fzf setup
 ################################################################################
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+if [ $(whence fzf) ]; then
+  source <(fzf --zsh)
+fi
 
 ################################################################################
 # Tmux setup
@@ -51,7 +53,12 @@ fi
 HISTSIZE=10000
 SAVEHIST=10000
 
-export EDITOR="vim"
+if [ $(whence nvim) ]; then
+  export EDITOR="nvim"
+  alias vim=nvim
+elif [ $(whence vim) ]; then
+  export EDITOR="vim"
+fi
 
 ################################################################################
 # Zsh key bindings
@@ -69,7 +76,6 @@ bindkey '^ ' autosuggest-accept
 ################################################################################
 
 alias csrefresh="find ./ -name '*.c' -o -name '*.h' > cscope.files"
-alias vim=nvim
 
 ################################################################################
 
