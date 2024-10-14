@@ -21,7 +21,8 @@ source $ZSH/oh-my-zsh.sh
 # Path variable
 ################################################################################
 
-export PATH=$PATH:~/bin/
+export PATH=$HOME/bin/:$PATH
+export PATH=$HOME/.local/bin:$PATH
 
 ################################################################################
 # Fzf setup
