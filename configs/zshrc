@@ -77,6 +77,14 @@ bindkey '^ ' autosuggest-accept
 
 alias csrefresh="find ./ -name '*.c' -o -name '*.h' > cscope.files"
 
+if [ $(whence eza) ]; then
+  alias ls="eza"
+fi
+
+if [ $(whence batcat) ]; then
+  alias cat="batcat"
+fi
+
 ################################################################################
 
 # Source local zshrc configs.
