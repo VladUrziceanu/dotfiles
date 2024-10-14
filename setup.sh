@@ -44,7 +44,7 @@ install_omz() {
 install_tmux_themepack() {
   TMUX_THEMEPACK=${HOME}/.tmux-themepack
 
-  if [[ ! -d "${ZSH}" ]]; then
+  if [[ ! -d "${TMUX_THEMEPACK}" ]]; then
     git clone --quiet --filter=blob:none https://github.com/jimeh/tmux-themepack.git "${TMUX_THEMEPACK}"
   else
     git -C "${TMUX_THEMEPACK}" pull --quiet
