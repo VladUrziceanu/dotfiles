@@ -86,7 +86,7 @@ if [ $(whence fzf) ]; then
   source <(fzf --zsh)
 fi
 
-if [ $(whence fzf) ]; then
+if [ $(whence zoxide) ]; then
   eval "$(zoxide init --cmd cd zsh)"
 fi
 
