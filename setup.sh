@@ -51,6 +51,14 @@ install_tmux_themepack() {
   fi
 }
 
+install_gdb_dashboard() {
+  GDBINIT=${HOME}/.gdbinit
+
+  if [[ ! -e "${GDBINIT}" ]]; then
+    wget -P ~ https://github.com/cyrus-and/gdb-dashboard/raw/master/.gdbinit
+  fi
+}
+
 link_file() {
   local source=$1
   local target=$2
@@ -73,6 +81,7 @@ link_file() {
 main() {
   install_omz
   install_tmux_themepack
+  install_gdb_dashboard
 
   FILES_TO_SYMLINK=($(find configs -mindepth 1 -maxdepth 1 -type f))
   for dotfile in "${FILES_TO_SYMLINK[@]}"; do
