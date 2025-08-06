@@ -94,7 +94,7 @@ end
 if command -v fd >/dev/null
   set -g FZF_DEFAULT_COMMAND 'fd --type f --follow --hidden'
   set -g FZF_CTRL_T_COMMAND "$FZF_DEFAULT_COMMAND"
-  set -g FZF_ALT_C_COMMAND='fd --type d --color never'
+  set -g FZF_ALT_C_COMMAND "fd --type d --color never"
 end
 
 ################################################################################
