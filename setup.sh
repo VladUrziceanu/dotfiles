@@ -55,7 +55,13 @@ install_gdb_dashboard() {
   GDBINIT=${HOME}/.gdbinit
 
   if [[ ! -e "${GDBINIT}" ]]; then
-    wget -P ~ https://github.com/cyrus-and/gdb-dashboard/raw/master/.gdbinit
+    if whence wget &>/dev/null; then
+      wget -P ~ https://github.com/cyrus-and/gdb-dashboard/raw/master/.gdbinit
+    elif whence curl &>/dev/null; then
+      curl -L -o "${GDBINIT}" https://github.com/cyrus-and/gdb-dashboard/raw/master/.gdbinit
+    else
+      printf "\e[0;31m  [✖] %s\e[0m\n" "Please install wget or curl to download .gdbinit."
+    fi
   fi
 }
 
