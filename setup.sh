@@ -1,18 +1,22 @@
 #!/usr/bin/env bash
 
+set -e -u -o pipefail
+
 execute() {
   cmd=$1
   msg=$2
 
   eval "${cmd}"
-  if [[ $? ]]; then
+  if [[ $? -eq 0 ]]; then
     # Print output in green.
     printf "\e[0;32m  [✔] %s\e[0m\n" "${msg}"
   else
     # Print output in red.
     printf "\e[0;31m  [✖] %s\e[0m\n" "${msg}"
+    exit 1
   fi
 }
+
 
 install_omz() {
   ZSH=${HOME}/.oh-my-zsh
