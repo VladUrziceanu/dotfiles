@@ -15,6 +15,7 @@ cd ~/.dotfiles
 The `setup.sh` script will automatically:
 - Install dependencies using Homebrew (macOS) or APT (Debian/Ubuntu).
 - Install Oh My Zsh and custom plugins.
+- Install Fisher and fish plugins.
 - Create symlinks for the configuration files in your home directory.
 
 ## Testing

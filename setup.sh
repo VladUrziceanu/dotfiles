@@ -362,6 +362,18 @@ install_fzf_from_source() {
   warn "Add 'source ~/.fzf.zsh' to your .zshrc to enable fzf."
 }
 
+# Install fisher package manager for fish shell.
+install_fisher() {
+  info "Installing fisher..."
+  if fish -c "type fisher >/dev/null 2>&1"; then
+    success "fisher is already installed."
+    info "Updating fisher..."
+    execute "fish -c fisher" "Updating fisher..."
+  else
+    execute "fish -c 'curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher'" "Installing fisher..."
+  fi
+}
+
 
 # ======================================================================================================================
 #  _            _ 
@@ -468,6 +480,7 @@ main() {
   install_tmux_themepack
   install_gdb_dashboard
   install_nvim_config
+  install_fisher
   create_symlinks
 
   success "Dotfiles setup complete!"

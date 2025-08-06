@@ -56,6 +56,21 @@ check_command "xclip"
 check_command "xdotool"
 check_command "fish"
 
+# Function to check if a fish function is available
+check_fish_function() {
+  local func=$1
+  printf "  Checking for fish function '%s'..." "$func"
+  if ! fish -c "type $func &>/dev/null"; then
+    echo " FAIL: Not found."
+    exit 1
+  fi
+  echo " OK"
+}
+
+echo "› Verifying fish functions..."
+check_fish_function "fisher"
+
+
 # 3. Verify Oh My Zsh installation
 echo "› Verifying Oh My Zsh installation..."
 if [[ ! -d "/home/testuser/.oh-my-zsh" ]]; then
