@@ -88,7 +88,64 @@ link_file() {
   execute "ln -fs ${source} ${target}" "Linking ${target} → ${source}"
 }
 
+install_dependencies() {
+  # Define dependencies
+  local brew_packages=(fzf eza bat zoxide fd neovim tmux wget)
+  # On linux, bat is batcat, fd is fd-find. eza is not in default repos.
+  local apt_packages=(fzf batcat fd-find neovim tmux wget curl xclip xdotool)
+
+  if [[ "$(uname)" == "Darwin" ]]; then
+    # macOS
+    if ! command -v brew &>/dev/null; then
+      printf "\e[0;31m  [✖] %s\e[0m\n" "Homebrew not found. Please install it first."
+      printf "      See https://brew.sh/\n"
+      exit 1
+    fi
+
+    printf "› Checking Homebrew dependencies...\n"
+    for package in "${brew_packages[@]}"; do
+      if ! brew list --formula | grep -q "^${package}$"; then
+        execute "brew install ${package}" "Installing ${package}..."
+      else
+        printf "\e[0;32m  [✔] %s is already installed.\e[0m\n" "${package}"
+      fi
+    done
+
+  elif [[ "$(uname)" == "Linux" ]]; then
+    # Linux
+    if ! command -v apt-get &>/dev/null; then
+      printf "\e[0;31m  [✖] %s\e[0m\n" "apt-get not found. This script currently only supports Debian-based distributions."
+      exit 1
+    fi
+
+    printf "› Checking APT dependencies...\n"
+    printf "  This may require sudo password.\n"
+
+    # Run apt-get update once
+    execute "sudo apt-get update" "Updating package lists"
+
+    for package in "${apt_packages[@]}"; do
+      # dpkg -s checks installation status
+      if ! dpkg -s "${package}" &>/dev/null; then
+        execute "sudo apt-get install -y ${package}" "Installing ${package}..."
+      else
+        printf "\e[0;32m  [✔] %s is already installed.\e[0m\n" "${package}"
+      fi
+    done
+
+    # Install eza separately as it's not in default repos
+    if ! command -v eza &>/dev/null; then
+      printf "\e[0;33m  [!] %s\e[0m\n" "eza not found. Please install it manually. See https://github.com/eza-community/eza/blob/main/INSTALL.md"
+    fi
+
+  else
+    printf "\e[0;31m  [✖] %s\e[0m\n" "Unsupported OS: $(uname)"
+    exit 1
+  fi
+}
+
 main() {
+  install_dependencies
   install_omz
   install_tmux_themepack
   install_gdb_dashboard
@@ -101,5 +158,6 @@ main() {
     link_file "$sourceFile" "$targetFile"
   done
 }
+
 
 main
