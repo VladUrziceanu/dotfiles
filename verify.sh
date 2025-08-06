@@ -42,6 +42,7 @@ check_symlink "/home/testuser/.zshrc" "configs/zshrc"
 check_symlink "/home/testuser/.tmux.conf" "configs/tmux.conf"
 check_symlink "/home/testuser/.gitconfig" "configs/gitconfig"
 check_symlink "/home/testuser/.gitignore_global" "configs/gitignore_global"
+check_symlink "/home/testuser/.config/fish/config.fish" "configs/config.fish"
 
 # 2. Verify Dependencies
 echo "› Verifying installed dependencies..."
@@ -53,6 +54,7 @@ check_command "tmux"
 check_command "gdb"
 check_command "xclip"
 check_command "xdotool"
+check_command "fish"
 
 # 3. Verify Oh My Zsh installation
 echo "› Verifying Oh My Zsh installation..."

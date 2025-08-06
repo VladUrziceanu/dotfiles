@@ -1,6 +1,6 @@
 # Dotfiles
 
-This is my personal dotfiles setup. It includes configurations for `zsh`, `tmux`, `git`, and more, along with a script to automate the setup process.
+This is my personal dotfiles setup. It includes configurations for `zsh`, `fish`, `tmux`, `git`, and more, along with a script to automate the setup process.
 
 ## Installation
 

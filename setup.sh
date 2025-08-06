@@ -148,6 +148,7 @@ install_brew_dependencies() {
     tmux
     wget
     fzf
+    fish
   )
 
   info "Checking Homebrew dependencies..."
@@ -191,6 +192,7 @@ install_apt_dependencies() {
     xdotool
     gdb
     zsh
+    fish
   )
 
   info "Checking APT dependencies..."
@@ -418,7 +420,15 @@ create_symlinks() {
   for source_path in "${files_to_symlink[@]}"; do
     local filename
     filename=$(basename "${source_path}")
-    local target_path="${HOME}/.${filename}"
+    local target_path
+
+    if [ "${filename}" == "config.fish" ]; then
+      target_path="${HOME}/.config/fish/config.fish"
+      execute "mkdir -p ${HOME}/.config/fish" "Creating fish config directory..."
+    else
+      target_path="${HOME}/.${filename}"
+    fi
+
     link_file "${source_path}" "${target_path}"
   done
 }
