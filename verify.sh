@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e -u -o pipefail
 
+# Add fzf to the PATH for this script
+export PATH="${HOME}/.fzf/bin:${PATH}"
+
 echo "--- Running Verification ---"
 
 # Function to check for a file and its symlink target

@@ -90,9 +90,9 @@ link_file() {
 
 install_dependencies() {
   # Define dependencies
-  local brew_packages=(fzf eza bat zoxide fd neovim tmux wget)
+  local brew_packages=(eza bat zoxide fd neovim tmux wget)
   # On linux, bat is batcat, fd is fd-find. eza is not in default repos.
-  local apt_packages=(git fzf bat fd-find neovim tmux wget curl xclip xdotool gdb)
+  local apt_packages=(git bat fd-find neovim tmux wget curl xclip xdotool gdb)
 
   if [[ "$(uname)" == "Darwin" ]]; then
     # macOS
@@ -144,8 +144,18 @@ install_dependencies() {
   fi
 }
 
+install_fzf() {
+  if [[ ! -d "${HOME}/.fzf" ]]; then
+    execute "git clone --depth 1 https://github.com/junegunn/fzf.git ${HOME}/.fzf" "Cloning fzf..."
+    execute "${HOME}/.fzf/install --bin" "Installing fzf..."
+  else
+    printf "\e[0;32m  [✔] %s is already installed.\e[0m\n" "fzf"
+  fi
+}
+
 main() {
   install_dependencies
+  install_fzf
   install_omz
   install_tmux_themepack
   install_gdb_dashboard
@@ -155,9 +165,10 @@ main() {
     sourceFile="$(pwd)/${dotfile}"
     targetFile="${HOME}/.$(basename "${dotfile}")"
 
-    link_file "$sourceFile" "$targetFile"
+    link_file "${sourceFile}" "${targetFile}"
   done
 }
+
 
 
 main

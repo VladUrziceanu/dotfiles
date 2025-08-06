@@ -86,9 +86,13 @@ fi
 # Shell tools setup
 ################################################################################
 
-if [ $(whence fzf) ]; then
-  source <(fzf --zsh)
+# fzf setup
+# The fzf installer will generate the necessary files. We just need to make sure
+# the binary is in the PATH and the generated zsh script is sourced.
+export PATH="${HOME}/.fzf/bin:${PATH}"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+if [ $(whence fzf) ]; then
   # Display source tree and file preview for ALT-C.
   FZF_ALT_C_OPTS="--preview '(eza --tree --icons --level 3 --color=always --group-directories-first {} || tree -C {}) | head -200'"
 
@@ -101,7 +105,6 @@ if [ $(whence fzf) ]; then
   zstyle ':fzf-tab:complete:cd:*' fzf-preview '(eza --tree --icons --color=always $realpath || tree -C $realpath) 2> /dev/null'
   zstyle ':completion:*:descriptions' format '[%d]'
   zstyle ':fzf-tab:*' switch-group ',' '.'
-
 fi
 
 if [ $(whence zoxide) ]; then
