@@ -70,6 +70,22 @@ check_fish_function() {
 echo "› Verifying fish functions..."
 check_fish_function "fisher"
 
+echo "› Verifying fish plugins..."
+plugins_file="/home/testuser/configs/fish_plugins"
+while IFS= read -r plugin || [ -n "$plugin" ]; do
+  if [ -z "$plugin" ] || [[ "$plugin" =~ ^\s*# ]]; then
+    continue
+  fi
+  printf "  Checking for fish plugin '%s'..." "$plugin"
+  if ! fish -c "fisher list | grep -q \"^${plugin}\"" ; then
+    echo " FAIL: Not found."
+    exit 1
+  fi
+  echo " OK"
+done < "${plugins_file}"
+
+
+
 
 # 3. Verify Oh My Zsh installation
 echo "› Verifying Oh My Zsh installation..."

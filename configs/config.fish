@@ -51,6 +51,19 @@ if command -v batcat >/dev/null
   alias cat "batcat"
 end
 
+if command -v brew >/dev/null
+  alias b="brew"
+end
+
+################################################################################
+# Colored man pages
+################################################################################
+
+if command -v bat >/dev/null
+    set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
+end
+
+
 ################################################################################
 # Shell tools setup
 ################################################################################
@@ -76,15 +89,6 @@ if command -v fd >/dev/null
   set -g FZF_DEFAULT_COMMAND 'fd --type f --follow --hidden'
   set -g FZF_CTRL_T_COMMAND "$FZF_DEFAULT_COMMAND"
   set -g FZF_ALT_C_COMMAND='fd --type d --color never'
-end
-
-################################################################################
-# Fish plugin management
-################################################################################
-
-if command -v fisher >/dev/null
-  fisher install PatrickF1/fzf.fish
-  fisher install gazorby/fish-foreign-env
 end
 
 ################################################################################

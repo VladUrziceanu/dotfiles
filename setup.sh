@@ -3,10 +3,10 @@
 set -e -u -o pipefail
 
 # ======================================================================================================================
-#  ____        _   _ 
-# |  _ \  ___ | |_| |_ ___ _ __ 
+#  ____        _   _
+# |  _ \  ___ | |_| |_ ___ _ __
 # | | | |/ _ \| __| __/ _ \ '__|
-# | |_| | (_) | |_| ||  __/ | 
+# | |_| | (_) | |_| ||  __/ |
 # |____/ \___/ \__|
 #
 # ======================================================================================================================
@@ -27,10 +27,10 @@ SCRIPT_DIR=$(get_script_dir)
 cd "${SCRIPT_DIR}"
 
 # ======================================================================================================================
-#  ____ 
-# / ___| ___ _ __   ___ _ __ 
+#  ____
+# / ___| ___ _ __   ___ _ __
 # \___ \/ _ \ '_ \ / _ \ '__|
-#  ___) |  __/ | | |  __/ | 
+#  ___) |  __/ | | |  __/ |
 # |____/ \___|_| |_|\___|_|
 #
 # ======================================================================================================================
@@ -98,10 +98,10 @@ execute() {
 }
 
 # ======================================================================================================================
-#  ____  _             _ 
-# / ___|| |_ __ _ _ __| |_ 
+#  ____  _             _
+# / ___|| |_ __ _ _ __| |_
 # \___ \| __/ _` | '__| __|
-#  ___) | || (_| | |  | |_ 
+#  ___) | || (_| | |  | |_
 # |____/ \__\__,_|_|   \__|
 #
 # ======================================================================================================================
@@ -118,19 +118,19 @@ command_exists() {
 #   "macos", "linux", or "unknown"
 detect_os() {
   case "$(uname -s)" in
-    Darwin) echo "macos" ;; 
-    Linux) echo "linux" ;; 
-    *) echo "unknown" ;; 
+    Darwin) echo "macos" ;;
+    Linux) echo "linux" ;;
+    *) echo "unknown" ;;
   esac
 }
 
 # ======================================================================================================================
-#  _   _      _ 
-# | \ | | ___| |___  ___  _ __ 
-# |  \| |/ _ \ __\ \/ / | '_ \ 
+#  _   _      _
+# | \ | | ___| |___  ___  _ __
+# |  \| |/ _ \ __\ \/ / | '_ \
 # | |\  |  __/ |_ >  <| | |_) |
-# |_| \_|\___|\__/_/\_\_| .__/ 
-#                       |_|  
+# |_| \_|\___|\__/_/\_\_| .__/
+#                       |_|
 # ======================================================================================================================
 
 # Install dependencies using Homebrew (macOS).
@@ -250,16 +250,16 @@ install_neovim_linux() {
       nvim_url="https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz"
       nvim_archive="/tmp/nvim-linux64.tar.gz"
       nvim_dir="/tmp/nvim-linux64"
-      ;; 
+      ;;
     "arm64")
       nvim_url="https://github.com/neovim/neovim/releases/latest/download/nvim-linux-arm64.tar.gz"
       nvim_archive="/tmp/nvim-linux-arm64.tar.gz"
       nvim_dir="/tmp/nvim-linux-arm64"
-      ;; 
-    *) 
+      ;;
+    *)
       warn "Unsupported Linux architecture for Neovim auto-install: ${arch}. Please install it manually."
       return
-      ;; 
+      ;;
   esac
 
   execute "curl -L ${nvim_url} -o ${nvim_archive}" "Downloading nvim for ${arch}..."
@@ -270,12 +270,12 @@ install_neovim_linux() {
 }
 
 # ======================================================================================================================
-#   ____             __ _ 
-#  / ___|___  _ __  / _(_) __ _ 
+#   ____             __ _
+#  / ___|___  _ __  / _(_) __ _
 # | |   / _ \| '_ \| |_| |/ _` |
 # | |__| (_) | | | |  _| | (_| |
 #  \____\___/|_| |_|_| |_|\__, |
-#                         |___/ 
+#                         |___/
 # ======================================================================================================================
 
 # Clone or update a Git repository.
@@ -374,13 +374,36 @@ install_fisher() {
   fi
 }
 
+# Install fish plugins from the fish_plugins file.
+install_fish_plugins() {
+  info "Installing fish plugins..."
+  execute "fish -c 'fisher update'" "Installing fisher plugins..."
+
+  # local plugins_file="${SCRIPT_DIR}/configs/fish_plugins"
+  # if [ ! -f "${plugins_file}" ]; then
+  #   warn "No fish_plugins file found."
+  #   return
+  # fi
+  #
+  # while IFS= read -r plugin || [ -n "$plugin" ]; do
+  #   if [ -z "$plugin" ] || [[ "$plugin" =~ ^\s*# ]]; then
+  #     continue
+  #   fi
+  #   if fish -c "fisher list | grep -q \"^${plugin}\"" ; then
+  #     success "${plugin} is already installed."
+  #   else
+  #     execute "fish -c 'fisher install ${plugin}'" "Installing ${plugin}..."
+  #   fi
+  # done < "${plugins_file}"
+}
+
 
 # ======================================================================================================================
-#  _            _ 
-# | | ___   ___| | __ 
-# | |/ _ \ / __| |/ / 
-# | | (_) | (__|   < 
-# |_|\___/ \___|_|\_\ 
+#  _            _
+# | | ___   ___| | __
+# | |/ _ \ / __| |/ /
+# | | (_) | (__|   <
+# |_|\___/ \___|_|\_\
 #
 # ======================================================================================================================
 
@@ -437,6 +460,9 @@ create_symlinks() {
     if [ "${filename}" == "config.fish" ]; then
       target_path="${HOME}/.config/fish/config.fish"
       execute "mkdir -p ${HOME}/.config/fish" "Creating fish config directory..."
+    elif [ "${filename}" == "fish_plugins" ]; then
+      target_path="${HOME}/.config/fish/fish_plugins"
+      execute "mkdir -p ${HOME}/.config/fish" "Creating fish config directory..."
     else
       target_path="${HOME}/.${filename}"
     fi
@@ -446,12 +472,12 @@ create_symlinks() {
 }
 
 # ======================================================================================================================
-#  __  __ 
-# |  \/  | __ _ _ __   __ _  __ _  ___ 
+#  __  __
+# |  \/  | __ _ _ __   __ _  __ _  ___
 # | |\/| |/ _` | '_ \ / _` |/ _` |/ _ \
 # | |  | | (_| | | | | (_| | (_| |  __/
-# |_|  |_|\__,_|_| |_|\__,_|\__, |\___| 
-#                          |___/ 
+# |_|  |_|\__,_|_| |_|\__,_|\__, |\___|
+#                          |___/
 # ======================================================================================================================
 
 main() {
@@ -464,16 +490,16 @@ main() {
     "macos")
       info "macOS detected."
       install_brew_dependencies
-      ;; 
+      ;;
     "linux")
       info "Linux detected."
       install_apt_dependencies
       install_neovim_linux
       install_fzf_from_source
-      ;; 
+      ;;
     *)
       error "Unsupported operating system: $(uname -s)"
-      ;; 
+      ;;
   esac
 
   install_omz
@@ -482,6 +508,7 @@ main() {
   install_nvim_config
   install_fisher
   create_symlinks
+  install_fish_plugins
 
   success "Dotfiles setup complete!"
   warn "Please restart your shell or source your .zshrc for changes to take effect."
