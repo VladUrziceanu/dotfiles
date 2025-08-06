@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -e -u -o pipefail
 
-# Add fzf to the PATH for this script
-export PATH="${HOME}/.fzf/bin:${PATH}"
+# Add fzf and local bin to the PATH for this script
+export PATH="${HOME}/.fzf/bin:${HOME}/.local/bin:${PATH}"
 
 echo "--- Running Verification ---"
 

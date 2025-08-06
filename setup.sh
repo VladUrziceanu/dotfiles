@@ -92,7 +92,7 @@ install_dependencies() {
   # Define dependencies
   local brew_packages=(eza bat zoxide fd neovim tmux wget)
   # On linux, bat is batcat, fd is fd-find. eza is not in default repos.
-  local apt_packages=(git bat fd-find neovim tmux wget curl xclip xdotool gdb)
+  local apt_packages=(git bat fd-find tmux wget curl xclip xdotool gdb)
 
   if [[ "$(uname)" == "Darwin" ]]; then
     # macOS
@@ -104,7 +104,7 @@ install_dependencies() {
 
     printf "› Checking Homebrew dependencies...\n"
     for package in "${brew_packages[@]}"; do
-      if ! brew list --formula | grep -q "^${package}$"; then
+      if ! brew list --formula | grep -q "^${package}"; then
         execute "brew install ${package}" "Installing ${package}..."
       else
         printf "\e[0;32m  [✔] %s is already installed.\e[0m\n" "${package}"
@@ -144,6 +144,46 @@ install_dependencies() {
   fi
 }
 
+install_neovim() {
+  # Install latest neovim on Linux, as distro packages are often outdated.
+  if [[ "$(uname)" == "Linux" ]] && ! command -v nvim &>/dev/null; then
+    execute "mkdir -p ${HOME}/.local/bin" "Creating .local/bin directory..."
+    local arch
+    arch=$(dpkg --print-architecture)
+    local nvim_url=""
+    local nvim_archive=""
+    local nvim_dir=""
+
+    case "${arch}" in
+      "amd64")
+        nvim_url="https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz"
+        nvim_archive="/tmp/nvim-linux64.tar.gz"
+        nvim_dir="/tmp/nvim-linux64"
+        ;;
+      "arm64")
+        nvim_url="https://github.com/neovim/neovim/releases/latest/download/nvim-linux-arm64.tar.gz"
+        nvim_archive="/tmp/nvim-linux-arm64.tar.gz"
+        nvim_dir="/tmp/nvim-linux-arm64"
+        ;;
+      *)
+        printf "\e[0;33m  [!] %s\e[0m\n" "Unsupported Linux architecture for Neovim auto-install: ${arch}. Please install it manually."
+        return
+        ;;
+    esac
+
+    execute "curl -L ${nvim_url} -o ${nvim_archive}" "Downloading nvim for ${arch}..."
+    execute "tar xzf ${nvim_archive} -C /tmp" "Extracting nvim..."
+    execute "mv ${nvim_dir}/bin/nvim ${HOME}/.local/bin/" "Installing nvim..."
+    execute "rm -rf ${nvim_dir} ${nvim_archive}" "Cleaning up nvim install..."
+
+  elif [[ "$(uname)" != "Linux" ]]; then
+     # On non-Linux systems (like macOS), we assume neovim is handled by install_dependencies
+     return
+  else
+    printf "\e[0;32m  [✔] %s is already installed.\e[0m\n" "neovim"
+  fi
+}
+
 install_fzf() {
   if [[ ! -d "${HOME}/.fzf" ]]; then
     execute "git clone --depth 1 https://github.com/junegunn/fzf.git ${HOME}/.fzf" "Cloning fzf..."
@@ -165,6 +205,7 @@ install_nvim_config() {
 
 main() {
   install_dependencies
+  install_neovim
   install_fzf
   install_omz
   install_tmux_themepack
@@ -179,6 +220,7 @@ main() {
     link_file "${sourceFile}" "${targetFile}"
   done
 }
+
 
 
 
