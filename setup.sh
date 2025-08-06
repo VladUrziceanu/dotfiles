@@ -92,7 +92,7 @@ install_dependencies() {
   # Define dependencies
   local brew_packages=(fzf eza bat zoxide fd neovim tmux wget)
   # On linux, bat is batcat, fd is fd-find. eza is not in default repos.
-  local apt_packages=(fzf batcat fd-find neovim tmux wget curl xclip xdotool)
+  local apt_packages=(git fzf bat fd-find neovim tmux wget curl xclip xdotool gdb)
 
   if [[ "$(uname)" == "Darwin" ]]; then
     # macOS
