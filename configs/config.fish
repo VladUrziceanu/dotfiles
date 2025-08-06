@@ -10,10 +10,16 @@ fish_add_path $HOME/.local/bin
 ################################################################################
 
 # Use 256 color for tmux.
-alias tmux="TERM=screen-256color-bce tmux"
+alias tmux="TERM=screen-256color-bce command tmux"
 # Attempt to take over existing sessions before creating a new tmux session.
 function t
-  tmux -u new -ADs {$argv[1]:-tmux}
+  set -l session_name
+  if [ (count $argv) -gt 0 ]
+    set session_name $argv[1]
+  else
+    set session_name "tmux"
+  end
+  tmux -u new -ADs $session_name
 end
 if not set -q TMUX
   # Switch to xterm if we're in a tmux session.
