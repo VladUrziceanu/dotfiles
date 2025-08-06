@@ -153,12 +153,23 @@ install_fzf() {
   fi
 }
 
+install_nvim_config() {
+  NVIM_CONFIG_DIR="${HOME}/.config/nvim"
+  if [[ ! -d "${NVIM_CONFIG_DIR}" ]]; then
+    execute "mkdir -p ${HOME}/.config" "Creating .config directory..."
+    execute "git clone https://github.com/VladUrziceanu/NvChad-config ${NVIM_CONFIG_DIR}" "Cloning NvChad config..."
+  else
+    printf "\e[0;32m  [✔] %s is already installed.\e[0m\n" "NvChad config"
+  fi
+}
+
 main() {
   install_dependencies
   install_fzf
   install_omz
   install_tmux_themepack
   install_gdb_dashboard
+  install_nvim_config
 
   FILES_TO_SYMLINK=($(find configs -mindepth 1 -maxdepth 1 -type f))
   for dotfile in "${FILES_TO_SYMLINK[@]}"; do

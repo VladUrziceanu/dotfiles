@@ -62,5 +62,13 @@ if [[ ! -d "/home/testuser/.oh-my-zsh" ]]; then
 fi
 echo "  OK"
 
+# 4. Verify NvChad installation
+echo "› Verifying NvChad installation..."
+if [[ ! -d "/home/testuser/.config/nvim" ]]; then
+    echo "  FAIL: NvChad config directory not found."
+    exit 1
+fi
+echo "  OK"
+
 
 echo "--- Verification Complete: All checks passed! ---"
