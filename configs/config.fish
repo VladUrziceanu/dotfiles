@@ -30,6 +30,7 @@ end
 # Environment setup
 ################################################################################
 
+set -g fish_greeting ""
 set -x HISTSIZE 10000
 set -x SAVEHIST 10000
 
