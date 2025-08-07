@@ -365,11 +365,7 @@ install_fzf_from_source() {
 # Install fisher package manager for fish shell.
 install_fisher() {
   info "Installing fisher..."
-  if fish -c "type fisher >/dev/null 2>&1"; then
-    success "fisher is already installed."
-    info "Updating fisher..."
-    execute "fish -c fisher" "Updating fisher..."
-  else
+  if fish -c "not type -q fisher"; then
     execute "fish -c 'curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher'" "Installing fisher..."
   fi
 }
@@ -378,23 +374,6 @@ install_fisher() {
 install_fish_plugins() {
   info "Installing fish plugins..."
   execute "fish -c 'fisher update'" "Installing fisher plugins..."
-
-  # local plugins_file="${SCRIPT_DIR}/configs/fish_plugins"
-  # if [ ! -f "${plugins_file}" ]; then
-  #   warn "No fish_plugins file found."
-  #   return
-  # fi
-  #
-  # while IFS= read -r plugin || [ -n "$plugin" ]; do
-  #   if [ -z "$plugin" ] || [[ "$plugin" =~ ^\s*# ]]; then
-  #     continue
-  #   fi
-  #   if fish -c "fisher list | grep -q \"^${plugin}\"" ; then
-  #     success "${plugin} is already installed."
-  #   else
-  #     execute "fish -c 'fisher install ${plugin}'" "Installing ${plugin}..."
-  #   fi
-  # done < "${plugins_file}"
 }
 
 
