@@ -103,5 +103,28 @@ if [[ ! -d "/home/testuser/.config/nvim" ]]; then
 fi
 echo "  OK"
 
+# 5. Verify Preferred Shell Switching
+echo "› Verifying preferred shell switching via arguments..."
+
+# Test setting fish as preferred shell
+printf "  Running setup.sh --fish..."
+# We run setup.sh with the --fish flag and redirect its verbose output to /dev/null
+/bin/bash /home/testuser/setup.sh --fish >/dev/null
+if [[ ! -f "/home/testuser/.prefer_fish" ]]; then
+  echo " FAIL: ~/.prefer_fish was not created."
+  exit 1
+fi
+echo " OK"
+
+# Test setting zsh as preferred shell
+printf "  Running setup.sh --zsh..."
+# We run setup.sh with the --zsh flag
+/bin/bash /home/testuser/setup.sh --zsh >/dev/null
+if [[ -f "/home/testuser/.prefer_fish" ]]; then
+  echo " FAIL: ~/.prefer_fish was not removed."
+  exit 1
+fi
+echo " OK"
+
 
 echo "--- Verification Complete: All checks passed! ---"

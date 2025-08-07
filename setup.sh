@@ -480,8 +480,57 @@ create_symlinks() {
 #                          |___/
 # ======================================================================================================================
 
+# Set the preferred shell based on user input.
+# Arguments:
+#   $1: The shell to set as preferred ("fish" or "zsh")
+set_preferred_shell() {
+  local shell_choice="$1"
+  local prefer_fish_file="${HOME}/.prefer_fish"
+
+  if [ "${shell_choice}" == "fish" ]; then
+    info "Setting fish as the preferred shell."
+    if ! touch "${prefer_fish_file}"; then
+      error "Failed to create ${prefer_fish_file}."
+    fi
+    success "Fish is set as the preferred shell. It will be auto-launched from .zshrc."
+  elif [ "${shell_choice}" == "zsh" ]; then
+    info "Setting zsh as the preferred shell."
+    if [ -f "${prefer_fish_file}" ]; then
+      if ! rm "${prefer_fish_file}"; then
+        error "Failed to remove ${prefer_fish_file}."
+      fi
+    fi
+    success "Zsh is set as the preferred shell."
+  else
+    error "Invalid shell choice: ${shell_choice}. Please use 'fish' or 'zsh'."
+  fi
+}
+
 main() {
   info "Starting dotfiles setup..."
+
+  # Default values
+  local preferred_shell=""
+
+  # Parse command-line arguments
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case $key in
+      --fish)
+        if [ -n "${preferred_shell}" ]; then error "Cannot specify both --fish and --zsh."; fi
+        preferred_shell="fish"
+        shift # past argument
+        ;;
+      --zsh)
+        if [ -n "${preferred_shell}" ]; then error "Cannot specify both --fish and --zsh."; fi
+        preferred_shell="zsh"
+        shift # past argument
+        ;;
+      *) # unknown option
+        error "Unknown option: $1"
+        ;;
+    esac
+  done
 
   local os
   os=$(detect_os)
@@ -510,8 +559,14 @@ main() {
   create_symlinks
   install_fish_plugins
 
+  # Set the preferred shell if the user provided a flag
+  if [ -n "${preferred_shell}" ]; then
+    set_preferred_shell "${preferred_shell}"
+  fi
+
   success "Dotfiles setup complete!"
   warn "Please restart your shell or source your .zshrc for changes to take effect."
 }
 
-main
+main "$@"
+
