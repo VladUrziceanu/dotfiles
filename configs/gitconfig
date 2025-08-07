@@ -4,9 +4,14 @@
   excludesfile = ~/.gitignore_global
   pager = delta
 [interactive]
-  diffFilter = delta --color-only
+  diffFilter = delta
 [color]
-  ui = auto
+  diff = auto
+  status = auto
+  branch = auto
+  interactive = auto
+  ui = true
+  pager = true
 [merge]
   conflictstyle = zdiff3
 [rebase]
