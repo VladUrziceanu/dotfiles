@@ -85,6 +85,14 @@ if command -v fzf >/dev/null
 
   # Show previews for files and directories.
   set -g FZF_CTRL_T_OPTS "--preview '(bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -200'"
+
+  function fzf --wraps=fzf --description="Use fzf-tmux if in tmux session"
+    if set --query TMUX
+      fzf-tmux $argv
+    else
+      command fzf $argv
+    end
+  end
 end
 
 if command -v zoxide >/dev/null
