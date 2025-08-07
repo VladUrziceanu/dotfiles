@@ -107,6 +107,18 @@ end
 
 ################################################################################
 
+################################################################################
+# Hydro prompt
+################################################################################
+
+# Gruvbox-friendly colors
+set --global hydro_color_prompt 8ec07c # Aqua
+set --global hydro_color_pwd fbf1c7 # Foreground
+set --global hydro_color_git fabd2f # Yellow
+set --global hydro_color_error fb4934 # Red
+
+################################################################################
+
 # Source local fish config.
 if test -f ~/.config/fish/config.local.fish
   source ~/.config/fish/config.local.fish
