@@ -1,3 +1,8 @@
+if [[ $(uname -s) -eq "Darwin" ]]
+then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
 # If fish is the preferred shell, execute it.
 # This allows switching to fish without chsh.
 if [[ -o interactive ]] && [ -f ~/.prefer_fish ] && command -v fish &>/dev/null; then
