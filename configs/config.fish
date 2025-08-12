@@ -120,6 +120,18 @@ set --global hydro_color_error fb4934 # Red
 
 ################################################################################
 
+################################################################################
+# Pyenv
+################################################################################
+
+if command -v pyenv >/dev/null
+  set -Ux PYENV_ROOT $HOME/.pyenv
+  test -d $PYENV_ROOT/bin; and fish_add_path $PYENV_ROOT/bin
+  pyenv init - fish | source
+end
+
+################################################################################
+
 # Source local fish config.
 if test -f ~/.config/fish/config.local.fish
   source ~/.config/fish/config.local.fish
