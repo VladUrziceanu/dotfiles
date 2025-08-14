@@ -85,7 +85,7 @@ if command -v fzf >/dev/null
   set -g FZF_DEFAULT_OPTS "--bind alt-k:preview-up,alt-j:preview-down,alt-u:preview-page-up,alt-d:preview-page-down"
 
   # Show previews for files and directories.
-  set -g FZF_CTRL_T_OPTS "--preview '(bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -200'"
+  set -g FZF_CTRL_T_OPTS "--preview 'bat --style=numbers --color=always {} || cat {} 2> /dev/null | head -200'"
 
   function fzf --wraps=fzf --description="Use fzf-tmux if in tmux session"
     if set --query TMUX
